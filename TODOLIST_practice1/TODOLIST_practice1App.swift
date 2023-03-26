@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct TODOLIST_practice1App: App {
+    
+    @StateObject var vm: TaskViewModel = TaskViewModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
+                .environmentObject(vm)
         }
     }
 }
