@@ -63,7 +63,7 @@ struct MainView: View {
                 }
                 .padding(.horizontal)
                 
-                Text(vm.completeItem().count == 0 ? "Complete" : "\(vm.completeItem().count) Item complete")
+                Text(vm.completeItem().count == 0 ? "NOTHING" : "\(vm.completeItem().count) Item complete")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -84,7 +84,6 @@ struct MainView: View {
                     }
                     .fontWeight(.semibold)
                     .foregroundColor(.green)
-
                 }
             }
         }

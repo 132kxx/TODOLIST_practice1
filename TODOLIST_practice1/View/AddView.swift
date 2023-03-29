@@ -16,17 +16,19 @@ struct AddView: View {
     @State var isAlert: Bool = false
     @State var alertTitle: String = ""
     @State var showAlert: Bool = false
+    @FocusState var focusField: Bool
     
     var body: some View {
         NavigationStack {
             VStack {
                 TextField("Type Something", text: $TextFieldText)
+                    .focused($focusField)
                     .padding()
                     .background{
                         RoundedRectangle(cornerRadius: 10).stroke()
                             .foregroundColor(.green)
                     }
-                
+                    
                 Button {
                     saveBtn()
                 } label: {
@@ -42,11 +44,37 @@ struct AddView: View {
             }
             .padding(.horizontal)
             
-
             .navigationTitle("Add Item")
             .alert(isPresented: $showAlert) {
                 getAlert()
             }
+        }
+        .onAppear {
+            focusField = true
+        }
+    }
+}
+
+
+
+struct AddView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainView()
+            .environmentObject(TaskViewModel())
+    }
+}
+
+extension AddView {
+    // MARK: COMPONENT
+    func getAlert() -> Alert {
+        Alert(title: Text(alertTitle))
+    }
+    
+    func textAppropriate() -> Bool {
+        if TextFieldText.count > 2 {
+            return true
+        } else {
+            return false
         }
     }
     
@@ -59,27 +87,5 @@ struct AddView: View {
             alertTitle = "please type at least 3 char"
             showAlert.toggle()
         }
-    }
-    
-    func textAppropriate() -> Bool {
-        if TextFieldText.count > 2 {
-            return true
-        } else {
-            return false
-        }
-        
-    }
-    
-    func getAlert() -> Alert {
-        Alert(title: Text(alertTitle))
-    }
-}
-
-
-
-struct AddView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-            .environmentObject(TaskViewModel())
     }
 }
