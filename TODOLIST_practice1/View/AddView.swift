@@ -22,21 +22,19 @@ struct AddView: View {
             VStack {
                 TextField("Type Something", text: $TextFieldText)
                     .padding()
-                    .background(Color.gray.opacity(0.5))
-                    .cornerRadius(10)
+                    .background{
+                        RoundedRectangle(cornerRadius: 10).stroke()
+                            .foregroundColor(.green)
+                    }
                 
                 Button {
                     saveBtn()
                 } label: {
                     Text("Submit".uppercased())
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundColor(.green)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 50)
-                        .background {
-                            RoundedRectangle(cornerRadius: 10)
-                        }
-                        .cornerRadius(10)
                 }
                
 

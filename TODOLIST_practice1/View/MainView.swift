@@ -13,27 +13,70 @@ struct MainView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(vm.tasks) { task in
-                    ListRowView(taskItem: task)
-                        .onTapGesture {
-                            withAnimation(.linear) {
-                                vm.updateItem(item: task)
+            VStack {
+            if vm.remainItem().count > 0 {
+                List {
+                    ForEach(vm.remainItem()) { task in
+                        ListRowView(taskItem: task)
+                            .onTapGesture {
+                                withAnimation(.linear) {
+                                    vm.updateItem(item: task)
+                                }
                             }
-                        }
+                    }
+                    .onDelete(perform: vm.deleteItem)
+                    .onMove(perform: vm.moveItem)
+                    .listRowSeparator(.hidden)
+
                 }
-                .onDelete(perform: vm.deleteItem)
-                .onMove(perform: vm.moveItem)
-                .onTapGesture {
-                    
-                }
+                .listStyle(PlainListStyle())
+            } else {
+                    NavigationLink {
+                        AddView()
+                    } label: {
+                        Text("Add Item!!")
+                            .foregroundColor(.white)
+                            .padding()
+                            .padding(.horizontal)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(.green)
+                            }
+                            .frame(maxHeight: .infinity)
+                    }
             }
-            .listStyle(PlainListStyle())
+            
+            // bottom line
+                Spacer()
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(vm.completeItem()) { task in
+                            ListRowView(taskItem: task)
+                                .onTapGesture {
+                                    withAnimation(.linear) {
+                                        vm.updateItem(item: task)
+                                    }
+                                }
+                        }
+                    }
+                    .padding(.vertical)
+                }
+                .padding(.horizontal)
+                
+                Text(vm.completeItem().count == 0 ? "Complete" : "\(vm.completeItem().count) Item complete")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .underline()
+                    .animation(.none)
+            }
+
             .navigationTitle("TODO LIST")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     EditButton()
                         .fontWeight(.semibold)
+                        .foregroundColor(.green)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -41,11 +84,12 @@ struct MainView: View {
                         AddView()
                     }
                     .fontWeight(.semibold)
+                    .foregroundColor(.green)
 
                 }
             }
-            
         }
+        .tint(.green)
     }
 }
 

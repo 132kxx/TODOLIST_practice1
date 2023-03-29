@@ -14,7 +14,17 @@ struct ListRowView: View {
     var body: some View {
         HStack {
             Image(systemName: taskItem.isFinished ? "checkmark.circle" : "circle")
+                .foregroundColor(taskItem.isFinished ? .gray.opacity(0.5) : .green)
             Text(taskItem.name)
+                .foregroundColor(taskItem.isFinished ? .gray.opacity(0.5) : .green)
+                .fontWeight(.semibold)
+                
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal)
+        .background {
+            RoundedRectangle(cornerRadius: 10).stroke()
+                .foregroundColor(taskItem.isFinished ? .gray.opacity(0.5) : .green)
         }
     }
 }
@@ -24,6 +34,7 @@ struct ListRowView_Previews: PreviewProvider {
     static var itemModel = Task(name: "hi", isFinished: false)
     
     static var previews: some View {
-        ListRowView(taskItem: itemModel)
+        MainView()
+            .environmentObject(TaskViewModel())
     }
 }
