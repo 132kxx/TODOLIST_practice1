@@ -9,20 +9,23 @@ import Foundation
 import SwiftUI
 
 class TaskViewModel: ObservableObject {
-    @Published var tasks: [Task] = []
+    @Published var tasks: [Task] = [] {
+        didSet {
+            saveItem()
+        }
+    }
+    let itemskey: String = "items_list"
     
     init() {
         getArray()
     }
     
     func getArray() {
-        let dommy: [Task] = [
-            Task(name: "This is first", isFinished: true),
-            Task(name: "This is se", isFinished: true),
-            Task(name:  "This is th", isFinished: true)
-
-        ]
-        tasks.append(contentsOf: dommy)
+        guard
+            let data = UserDefaults.standard.data(forKey: itemskey),
+            let decodedData = try? JSONDecoder().decode([Task].self, from: data)
+        else { return }
+        self.tasks = decodedData
     }
     
     func deleteItem(indexset: IndexSet) {
@@ -53,5 +56,11 @@ class TaskViewModel: ObservableObject {
     func completeItem() -> [Task] {
         let index = tasks.filter({ $0.isFinished == true })
         return index
+    }
+    
+    func saveItem() {
+        if let encodedData = try? JSONEncoder().encode(tasks) {
+            UserDefaults.standard.set(encodedData, forKey: itemskey)
+        }
     }
 }

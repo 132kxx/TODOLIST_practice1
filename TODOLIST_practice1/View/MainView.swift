@@ -31,6 +31,7 @@ struct MainView: View {
                 }
                 .listStyle(PlainListStyle())
             } else {
+                Spacer()
                     NavigationLink {
                         AddView()
                     } label: {
@@ -42,12 +43,11 @@ struct MainView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundColor(.green)
                             }
-                            .frame(maxHeight: .infinity)
                     }
             }
-            
+                
+            Spacer()
             // bottom line
-                Spacer()
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(vm.completeItem()) { task in
@@ -68,7 +68,6 @@ struct MainView: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .underline()
-                    .animation(.none)
             }
 
             .navigationTitle("TODO LIST")

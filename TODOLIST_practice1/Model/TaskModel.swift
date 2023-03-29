@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Task: Identifiable {
+struct Task: Identifiable, Codable {
     let id: String
     let name: String
     let isFinished: Bool
