@@ -29,6 +29,7 @@ struct ListRowView: View {
     }
 }
 
+
 struct ListRowView_Previews: PreviewProvider {
     
     static var itemModel = Task(name: "hi", isFinished: false)

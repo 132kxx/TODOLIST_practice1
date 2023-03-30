@@ -13,41 +13,44 @@ struct AddView: View {
     
     @EnvironmentObject var vm: TaskViewModel
     @State var TextFieldText: String = ""
-    @State var isAlert: Bool = false
-    @State var alertTitle: String = ""
-    @State var showAlert: Bool = false
     @FocusState var focusField: Bool
+    @State var showError: String = ""
+    @State var isError: Bool = false
     
     var body: some View {
         NavigationStack {
             VStack {
                 TextField("Type Something", text: $TextFieldText)
+                    .foregroundColor(.green)
                     .focused($focusField)
                     .padding()
+                    .tint(.green)
                     .background{
                         RoundedRectangle(cornerRadius: 10).stroke()
                             .foregroundColor(.green)
                     }
-                    
+                
+                Text(showError)
+                    .foregroundColor(.red)
+                
                 Button {
                     saveBtn()
                 } label: {
                     Text("Submit".uppercased())
                         .fontWeight(.semibold)
                         .foregroundColor(.green)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 50)
                 }
+                .padding(.vertical, 10)
+                .padding(.horizontal, 50)
                
+
 
                 Spacer()
             }
-            .padding(.horizontal)
+            .padding()
+            .padding(.top)
             
             .navigationTitle("Add Item")
-            .alert(isPresented: $showAlert) {
-                getAlert()
-            }
         }
         .onAppear {
             focusField = true
@@ -65,15 +68,12 @@ struct AddView_Previews: PreviewProvider {
 }
 
 extension AddView {
-    // MARK: COMPONENT
-    func getAlert() -> Alert {
-        Alert(title: Text(alertTitle))
-    }
-    
+    // MARK: FUNCTIONS
     func textAppropriate() -> Bool {
-        if TextFieldText.count > 2 {
+        if TextFieldText.count > 3 {
             return true
         } else {
+            isError = true
             return false
         }
     }
@@ -84,8 +84,9 @@ extension AddView {
             TextFieldText = ""
             dismiss()
         } else {
-            alertTitle = "please type at least 3 char"
-            showAlert.toggle()
+            showError = "please type at least 4 char"
+            TextFieldText = ""
         }
     }
+    
 }
