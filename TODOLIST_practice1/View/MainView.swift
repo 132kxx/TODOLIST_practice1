@@ -12,10 +12,17 @@ struct MainView: View {
     @EnvironmentObject var vm: TaskViewModel
     @State private var showSheet: Bool = false
     
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.shadowColor = .clear
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
-                taskList
+                doneList
                 
                 addBtn
                         
@@ -30,7 +37,8 @@ struct MainView: View {
                     .presentationDragIndicator(.visible)
             })
             
-            .navigationTitle("TODO LIST")
+            .navigationTitle("Done List")
+            .toolbarBackground(Color.clear, for: .navigationBar)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -47,6 +55,7 @@ struct MainView: View {
                     .foregroundColor(.green)
                 }
             }
+            
     }
 }
 
@@ -61,15 +70,23 @@ struct MainView_Previews: PreviewProvider {
 
 extension MainView {
     // MARK: COMPONETN
-    var taskList: some View {
+    var doneList: some View {
         List {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(.clear)
+                .frame(height: 10)
+            
             ForEach(vm.remainItem()) { task in
-                ListRowView(taskItem: task)
-                    .onTapGesture {
-                        withAnimation(.linear) {
-                            vm.updateItem(item: task)
+                HStack {
+                    Spacer()
+                    ListRowView(taskItem: task)
+                        .onTapGesture {
+                            withAnimation(.linear) {
+                                vm.updateItem(item: task)
+                            }
                         }
-                    }
+                    Spacer()
+                }
             }
             .onDelete(perform: vm.deleteItem)
             .onMove(perform: vm.moveItem)
@@ -83,13 +100,13 @@ extension MainView {
         Button {
             showSheet.toggle()
         } label: {
-            Text("Add Item!!")
-                .foregroundColor(.white)
+            Text("Add")
+                .foregroundColor(.black)
                 .padding()
                 .padding(.horizontal)
                 .background {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.green)
+                        .foregroundColor(.white)
                 }
         }
     }

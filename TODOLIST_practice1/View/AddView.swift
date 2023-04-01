@@ -27,7 +27,7 @@ struct AddView: View {
                     .tint(.green)
                     .background{
                         RoundedRectangle(cornerRadius: 10).stroke()
-                            .foregroundColor(.green)
+                            .foregroundColor(.black)
                     }
                 
                 Text(showError)
@@ -38,7 +38,13 @@ struct AddView: View {
                 } label: {
                     Text("Submit".uppercased())
                         .fontWeight(.semibold)
-                        .foregroundColor(.green)
+                        .foregroundColor(.black)
+                        .padding()
+                        .background {
+                            RoundedRectangle(cornerRadius: 10).stroke()
+                                .foregroundColor(.black)
+                        }
+                    
                 }
                 .padding(.vertical, 10)
                 .padding(.horizontal, 50)
@@ -64,6 +70,7 @@ struct AddView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
             .environmentObject(TaskViewModel())
+            .preferredColorScheme(.dark)
     }
 }
 
