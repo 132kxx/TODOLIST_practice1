@@ -12,12 +12,7 @@ struct ListRowView: View {
     var taskItem: Task
     
     var body: some View {
-        HStack {
-            Image(systemName: taskItem.isFinished ? "checkmark.circle" : "circle")
-                .foregroundColor(.black)
-            
-            Spacer()
-            
+        HStack(alignment: .center) {
             VStack {
                 Text(taskItem.name)
                     .foregroundColor(.black)
@@ -27,9 +22,6 @@ struct ListRowView: View {
                     .font(.caption2)
                     .foregroundColor(.gray)
             }
-            
-            Spacer()
-            
         }
         .padding(.horizontal)
         .frame(width: 300, height: 50)
